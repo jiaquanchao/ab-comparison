@@ -55,7 +55,8 @@ public class Experiment {
     }
     
     public void start() {
-        if (status != ExperimentStatus.CREATED) {
+        // 允许从 CREATED 或 STOPPED 状态启动
+        if (status != ExperimentStatus.CREATED && status != ExperimentStatus.STOPPED) {
             throw new IllegalStateException("实验状态不允许启动，当前状态: " + status);
         }
         this.status = ExperimentStatus.RUNNING;

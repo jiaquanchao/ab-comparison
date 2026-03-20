@@ -78,6 +78,11 @@ public class EnhancedLoadTestController {
             return err;
         }
 
+        // 启动实验（如果未启动）
+        if (experiment.getStatus() == ExperimentStatus.STOPPED) {
+            experiment.start();
+        }
+
         // 重置指标
         metricsService.reset();
         requestCounter.set(0);
@@ -332,8 +337,23 @@ public class EnhancedLoadTestController {
 
         // 测试2：低QPS测试（10 QPS, 20秒）
         System.out.println("\n=== 测试2：低QPS测试 ===");
+
+        // 确保实验已启动
+        if (experiment.getStatus() == ExperimentStatus.STOPPED) {
+            experiment.start();
+        }
+
         startLoadTest(10, 20);
-        try { Thread.sleep(22000); } catch (InterruptedException e) {}
+        // 等待压测线程结束（最多等待30秒）
+        for (int i = 0; i < 300 && running.get(); i++) {
+            try { Thread.sleep(100); } catch (InterruptedException e) {}
+        }
+
+        // 确保实验已停止
+        if (experiment.getStatus() == ExperimentStatus.RUNNING) {
+            experiment.stop();
+        }
+
         Map<String, Object> lowQpsResult = getLoadTestStatus();
 
         Map<String, Object> test2 = new HashMap<>();
@@ -347,8 +367,23 @@ public class EnhancedLoadTestController {
 
         // 测试3：中等QPS测试（100 QPS, 10秒）
         System.out.println("\n=== 测试3：中等QPS测试 ===");
+
+        // 确保实验已启动
+        if (experiment.getStatus() == ExperimentStatus.STOPPED) {
+            experiment.start();
+        }
+
         startLoadTest(100, 10);
-        try { Thread.sleep(12000); } catch (InterruptedException e) {}
+        // 等待压测线程结束（最多等待20秒）
+        for (int i = 0; i < 200 && running.get(); i++) {
+            try { Thread.sleep(100); } catch (InterruptedException e) {}
+        }
+
+        // 确保实验已停止
+        if (experiment.getStatus() == ExperimentStatus.RUNNING) {
+            experiment.stop();
+        }
+
         Map<String, Object> midQpsResult = getLoadTestStatus();
 
         Map<String, Object> test3 = new HashMap<>();
@@ -362,7 +397,11 @@ public class EnhancedLoadTestController {
 
         // 测试4：高QPS测试（1000 QPS, 5秒）
         System.out.println("\n=== 测试4：高QPS测试 ===");
-        startLoadTest(1000, 5);
+
+        // 确保实验已启动
+        if (experiment.getStatus() == ExperimentStatus.STOPPED) {
+            experiment.start();
+        }
         try { Thread.sleep(7000); } catch (InterruptedException e) {}
         Map<String, Object> highQpsResult = getLoadTestStatus();
 
