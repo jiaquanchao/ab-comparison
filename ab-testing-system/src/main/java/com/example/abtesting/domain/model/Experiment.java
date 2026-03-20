@@ -63,6 +63,10 @@ public class Experiment {
     }
     
     public void stop() {
+        // 幂等操作：如果已经是 STOPPED 状态，直接返回
+        if (status == ExperimentStatus.STOPPED) {
+            return;
+        }
         if (status != ExperimentStatus.RUNNING) {
             throw new IllegalStateException("实验状态不允许停止，当前状态: " + status);
         }

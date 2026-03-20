@@ -36,6 +36,7 @@ public class EnhancedLoadTestController {
     private final ExecutorService executor = Executors.newFixedThreadPool(200);
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final AtomicInteger requestCounter = new AtomicInteger(0);
+    private final AtomicBoolean comprehensiveRunning = new AtomicBoolean(false);
 
     @Autowired
     public EnhancedLoadTestController(ExperimentApplicationService experimentService,
