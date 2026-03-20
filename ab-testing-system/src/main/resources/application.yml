@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ab-testing-system
+
+# 日志级别
+logging:
+  level:
+    com.example.abtesting: DEBUG

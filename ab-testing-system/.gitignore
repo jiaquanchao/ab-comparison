@@ -1,0 +1,22 @@
+# 忽略父目录的配置文件
+../.learnings/
+../.openclaw/
+../memory/
+../native-american.skill
+../AGENT-COORDINATOR-TEMPLATE.md
+../AGENTS.md
+../HEARTBEAT.md
+../IDENTITY.md
+../MEMORY.md
+../SOUL.md
+../TOOLS.md
+../USER.md
+
+# 忽略其他编译产物
+target/
+*.class
+*.jar
+*.log
+.DS_Store
+.idea/
+.vscode/
